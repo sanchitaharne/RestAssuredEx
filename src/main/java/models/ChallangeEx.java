@@ -79,15 +79,17 @@ public class ChallangeEx {
         String endpoint = "http://localhost:80/api_testing/product/read_one.php";
         given().
                 queryParam("id", 18).
-                when().
+        when().
                 get(endpoint).
-                then().assertThat().statusCode(200).
-                header("Content-Type", "application/json").
-                body("id", notNullValue()).
-                body("name", equalTo("Multi-Vitamin (90 capsules)")).
-                body("description", equalTo("A daily dose of our Multi-Vitamins fulfills a day’s nutritional needs for over 12 vitamins and minerals.")).
-                body("price", equalTo("10.00")).
-                body("category_id", equalTo("4")).
-                body("category_name", equalTo("Supplements"));
+        then().
+                assertThat().
+                    statusCode(200).
+                    header("Content-Type", "application/json").
+                    body("id", notNullValue()).
+                    body("name", equalTo("Multi-Vitamin (90 capsules)")).
+                    body("description", equalTo("A daily dose of our Multi-Vitamins fulfills a day’s nutritional needs for over 12 vitamins and minerals.")).
+                    body("price", equalTo("10.00")).
+                    body("category_id", equalTo("4")).
+                    body("category_name", equalTo("Supplements"));
     }
 }
