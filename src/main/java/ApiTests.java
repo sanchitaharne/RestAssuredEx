@@ -1,25 +1,46 @@
 import models.Product;
 import org.junit.Test;
-
-import java.util.Locale;
-
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.Matchers.everyItem;
+import static org.hamcrest.Matchers.greaterThan;
+
 public class ApiTests {
 /* */
     @Test
     public void getResources(){
 
         String endpoint = "http://localhost:80/api_testing/category/read.php";
-        var response = given().when().get(endpoint).then();
-        response.log().body();
+        given().
+        when().
+          get(endpoint).
+        then().
+          assertThat().
+              statusCode(200).
+              log().
+               body().
+              body("records.size()", greaterThan(0)).
+              body("records.id", everyItem(notNullValue())).
+              body("records.name", notNullValue()).
+              body("records.description", notNullValue()).
+              body("records.id[0]", equalTo("1"));
+
     }
 
     @Test
     public void getResource(){
 
         String endpoint = "http://localhost:80/api_testing/product/read_one.php";
-        var response = given().queryParam("id", 1).when().get(endpoint).then();
-        response.log().body();
+        given().
+           queryParam("id", 1).
+              when().
+              get(endpoint).
+              then().assertThat().
+                body("id", equalTo("1")).
+                body("name", equalTo("Bamboo Thermal Ski Coat")).
+                body("description", equalTo("You’ll be the most environmentally conscious skier on the slopes – and the most stylish – wearing our fitted bamboo thermal ski coat, made from organic bamboo with recycled plastic down filling.")).
+                body("price", equalTo("99.00"));
     }
 
    @Test
